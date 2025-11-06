@@ -1,0 +1,106 @@
+import { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/config/firebase';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { NexusLogo } from '@/components/NexusLogo';
+import { toast } from 'sonner';
+import { motion } from 'framer-motion';
+import { LogIn } from 'lucide-react';
+
+export const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast.success('Login realizado com sucesso!');
+    } catch (error: any) {
+      console.error('Erro no login:', error);
+      toast.error('Erro ao fazer login. Verifique suas credenciais.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-dark flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
+      >
+        <Card className="border-border shadow-card">
+          <CardHeader className="space-y-4 text-center">
+            <div className="flex justify-center">
+              <NexusLogo size="lg" showTagline />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">Bem-vindo de volta</CardTitle>
+              <CardDescription>
+                Entre com suas credenciais para acessar o sistema
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium">
+                  Email
+                </label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={loading}
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="password" className="text-sm font-medium">
+                  Senha
+                </label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={loading}
+                />
+              </div>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={loading}
+              >
+                {loading ? (
+                  'Entrando...'
+                ) : (
+                  <>
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Entrar
+                  </>
+                )}
+              </Button>
+            </form>
+            <div className="mt-6 text-center text-xs text-muted-foreground">
+              <p>Sistema de gestão profissional para barbearias</p>
+              <p className="mt-1">© 2024 Nexus by Jon</p>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
+  );
+};
