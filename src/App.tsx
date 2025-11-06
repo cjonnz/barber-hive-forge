@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { LoadingScreen } from "@/components/LoadingScreen";
+import { LandingPage } from "@/pages/LandingPage";
 import { Login } from "@/pages/Login";
 import { AdminDashboard } from "@/pages/admin/AdminDashboard";
 import { BarbeirosPage } from "@/pages/admin/BarbeirosPage";
@@ -47,6 +48,19 @@ const AppRoutes = () => {
 
   return (
     <Routes>
+      {/* Landing Page */}
+      <Route 
+        path="/" 
+        element={
+          user ? (
+            <Navigate to={userData?.role === 'admin' ? '/admin' : '/barbeiro'} replace />
+          ) : (
+            <LandingPage />
+          )
+        } 
+      />
+
+      {/* Login */}
       <Route 
         path="/login" 
         element={
@@ -90,14 +104,6 @@ const AppRoutes = () => {
             </DashboardLayout>
           </ProtectedRoute>
         }
-      />
-
-      {/* Root redirect */}
-      <Route 
-        path="/" 
-        element={
-          <Navigate to={user ? (userData?.role === 'admin' ? '/admin' : '/barbeiro') : '/login'} replace />
-        } 
       />
 
       {/* 404 */}
