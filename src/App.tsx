@@ -9,7 +9,13 @@ import { LandingPage } from "@/pages/LandingPage";
 import { Login } from "@/pages/Login";
 import { AdminDashboard } from "@/pages/admin/AdminDashboard";
 import { BarbeirosPage } from "@/pages/admin/BarbeirosPage";
+import { AgendamentosPage } from "@/pages/admin/AgendamentosPage";
+import { ConfiguracoesPage } from "@/pages/admin/ConfiguracoesPage";
 import { BarbeiroDashboard } from "@/pages/barbeiro/BarbeiroDashboard";
+import { AgendaPage } from "@/pages/barbeiro/AgendaPage";
+import { ServicosPage } from "@/pages/barbeiro/ServicosPage";
+import { PerfilPage } from "@/pages/barbeiro/PerfilPage";
+import { AgendamentoPublico } from "@/pages/AgendamentoPublico";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import NotFound from "./pages/NotFound";
 
@@ -93,6 +99,26 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/admin/agendamentos"
+        element={
+          <ProtectedRoute allowedRole="admin">
+            <DashboardLayout userRole="admin">
+              <AgendamentosPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/configuracoes"
+        element={
+          <ProtectedRoute allowedRole="admin">
+            <DashboardLayout userRole="admin">
+              <ConfiguracoesPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
 
       {/* Barbeiro Routes */}
       <Route
@@ -105,6 +131,39 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/barbeiro/agenda"
+        element={
+          <ProtectedRoute allowedRole="barbeiro">
+            <DashboardLayout userRole="barbeiro">
+              <AgendaPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/barbeiro/servicos"
+        element={
+          <ProtectedRoute allowedRole="barbeiro">
+            <DashboardLayout userRole="barbeiro">
+              <ServicosPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/barbeiro/perfil"
+        element={
+          <ProtectedRoute allowedRole="barbeiro">
+            <DashboardLayout userRole="barbeiro">
+              <PerfilPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Public Booking Route */}
+      <Route path="/:linkPublico" element={<AgendamentoPublico />} />
 
       {/* 404 */}
       <Route path="*" element={<NotFound />} />
