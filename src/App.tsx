@@ -7,8 +7,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { LandingPage } from "@/pages/LandingPage";
 import { Login } from "@/pages/Login";
+import { CadastroBarbearia } from "@/pages/CadastroBarbearia";
+import { StatusPendente } from "@/pages/StatusPendente";
 import { AdminDashboard } from "@/pages/admin/AdminDashboard";
 import { BarbeirosPage } from "@/pages/admin/BarbeirosPage";
+import { SolicitacoesPage } from "@/pages/admin/SolicitacoesPage";
 import { AgendamentosPage } from "@/pages/admin/AgendamentosPage";
 import { ConfiguracoesPage } from "@/pages/admin/ConfiguracoesPage";
 import { BarbeiroDashboard } from "@/pages/barbeiro/BarbeiroDashboard";
@@ -78,6 +81,10 @@ const AppRoutes = () => {
         } 
       />
 
+      {/* Cadastro */}
+      <Route path="/cadastro" element={<CadastroBarbearia />} />
+      <Route path="/status-pendente" element={<StatusPendente />} />
+
       {/* Admin Routes */}
       <Route
         path="/admin"
@@ -95,6 +102,16 @@ const AppRoutes = () => {
           <ProtectedRoute allowedRole="admin">
             <DashboardLayout userRole="admin">
               <BarbeirosPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/solicitacoes"
+        element={
+          <ProtectedRoute allowedRole="admin">
+            <DashboardLayout userRole="admin">
+              <SolicitacoesPage />
             </DashboardLayout>
           </ProtectedRoute>
         }

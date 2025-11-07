@@ -192,7 +192,7 @@ export const AgendamentoPublico = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-muted-foreground">
             <span className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-primary" />
-              {barbeiro.endereco}
+              {barbeiro.endereco.cidade}/{barbeiro.endereco.estado}
             </span>
             <span className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-primary" />

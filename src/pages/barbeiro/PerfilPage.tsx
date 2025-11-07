@@ -23,7 +23,7 @@ export const PerfilPage = () => {
   const [formData, setFormData] = useState({
     nomeCompleto: '',
     telefone: '',
-    endereco: '',
+    enderecoCompleto: '',
     nomeEstabelecimento: ''
   });
 
@@ -38,10 +38,11 @@ export const PerfilPage = () => {
       const data = await barbeiroService.buscarPorId(userData!.barbeiroId!);
       if (data) {
         setBarbeiro(data);
+        const enderecoStr = `${data.endereco.rua}, ${data.endereco.numero} - ${data.endereco.bairro}, ${data.endereco.cidade}/${data.endereco.estado} - CEP: ${data.endereco.cep}`;
         setFormData({
           nomeCompleto: data.nomeCompleto,
           telefone: data.telefone,
-          endereco: data.endereco,
+          enderecoCompleto: enderecoStr,
           nomeEstabelecimento: data.nomeEstabelecimento
         });
       }
@@ -55,9 +56,13 @@ export const PerfilPage = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await barbeiroService.atualizar(userData!.barbeiroId!, formData);
-      setBarbeiro(prev => prev ? { ...prev, ...formData } : null);
+      await barbeiroService.atualizar(userData!.barbeiroId!, {
+        nomeCompleto: formData.nomeCompleto,
+        telefone: formData.telefone,
+        nomeEstabelecimento: formData.nomeEstabelecimento
+      });
       toast.success('Dados atualizados com sucesso!');
+      loadDados();
     } catch (error) {
       toast.error('Erro ao atualizar dados');
     } finally {
@@ -245,10 +250,12 @@ export const PerfilPage = () => {
                   <Label htmlFor="endereco">Endereço</Label>
                   <Input
                     id="endereco"
-                    value={formData.endereco}
-                    onChange={(e) => setFormData({ ...formData, endereco: e.target.value })}
+                    value={formData.enderecoCompleto}
+                    disabled
+                    className="bg-muted"
                     placeholder="Rua, número, bairro, cidade"
                   />
+                  <p className="text-xs text-muted-foreground">Entre em contato com o suporte para alterar o endereço</p>
                 </div>
 
                 <div className="space-y-2 md:col-span-2">

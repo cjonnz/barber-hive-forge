@@ -41,6 +41,7 @@ export const DashboardLayout = ({ children, userRole }: DashboardLayoutProps) =>
 
   const adminMenuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
+    { icon: ClipboardList, label: 'Solicitações', path: '/admin/solicitacoes' },
     { icon: Users, label: 'Barbeiros', path: '/admin/barbeiros' },
     { icon: Calendar, label: 'Agendamentos', path: '/admin/agendamentos' },
     { icon: Settings, label: 'Configurações', path: '/admin/configuracoes' }

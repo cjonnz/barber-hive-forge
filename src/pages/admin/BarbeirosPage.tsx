@@ -52,6 +52,7 @@ export const BarbeirosPage = () => {
   const statusColors: Record<BarbeiroStatus, string> = {
     pendente: 'bg-warning/20 text-warning',
     aprovado: 'bg-info/20 text-info',
+    recusado: 'bg-destructive/20 text-destructive',
     ativo: 'bg-success/20 text-success',
     suspenso: 'bg-destructive/20 text-destructive'
   };
@@ -59,6 +60,7 @@ export const BarbeirosPage = () => {
   const statusLabels: Record<BarbeiroStatus, string> = {
     pendente: 'Pendente',
     aprovado: 'Aprovado',
+    recusado: 'Recusado',
     ativo: 'Ativo',
     suspenso: 'Suspenso'
   };

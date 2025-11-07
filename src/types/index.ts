@@ -1,8 +1,8 @@
 // Tipos do sistema Nexus
 
 export type UserRole = 'admin' | 'barbeiro';
-export type BarbeiroStatus = 'pendente' | 'aprovado' | 'ativo' | 'suspenso';
-export type PlanoTipo = 'basic' | 'spark' | 'blaze';
+export type BarbeiroStatus = 'pendente' | 'aprovado' | 'recusado' | 'ativo' | 'suspenso';
+export type PlanoTipo = 'basico' | 'sparkle' | 'blaze' | 'teste';
 export type PagamentoTipo = 'mensal' | 'semestral' | 'anual';
 export type AgendamentoStatus = 'pendente' | 'confirmado' | 'concluido' | 'cancelado';
 
@@ -16,8 +16,17 @@ export interface Barbeiro {
   id: string;
   nomeCompleto: string;
   cpf: string;
-  endereco: string;
+  endereco: {
+    rua: string;
+    numero: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
+    cep: string;
+  };
   nomeEstabelecimento: string;
+  cnpj: string;
+  quantidadeFuncionarios: number;
   fotoFachada?: string;
   telefone: string;
   email: string;
@@ -25,12 +34,15 @@ export interface Barbeiro {
   plano: PlanoTipo;
   status: BarbeiroStatus;
   dataCadastro: Date;
+  dataAprovacao?: Date;
+  dataInicioTeste?: Date;
   vencimentoPlano: Date;
   pagamentoTipo: PagamentoTipo;
   modoTeste: boolean;
   linkPublico: string;
   linkPagamentoExterno?: string;
   totalAgendamentos: number;
+  motivoRecusa?: string;
 }
 
 export interface Agendamento {
@@ -61,35 +73,35 @@ export interface PlanoConfig {
 
 export const PLANOS: PlanoConfig[] = [
   {
-    nome: 'basic',
-    label: 'Basic',
-    agendamentosMensais: 100,
+    nome: 'basico',
+    label: 'Básico',
+    agendamentosMensais: 150,
     preco: {
-      mensal: 49.90,
-      semestral: 269.40,
-      anual: 479.04
+      mensal: 29.99,
+      semestral: 161.94,
+      anual: 287.88
     },
     features: [
-      'Até 100 agendamentos/mês',
-      'Página pública de agendamento',
-      'Gerenciamento de serviços',
+      'Até 150 agendamentos/mês',
+      'Acesso à tela de agendamentos',
+      'Sem relatórios ou estatísticas',
       'Suporte por email'
     ]
   },
   {
-    nome: 'spark',
-    label: 'Spark',
-    agendamentosMensais: 300,
+    nome: 'sparkle',
+    label: 'Sparkle',
+    agendamentosMensais: 250,
     preco: {
-      mensal: 89.90,
-      semestral: 485.46,
-      anual: 863.04
+      mensal: 48.99,
+      semestral: 264.54,
+      anual: 470.30
     },
     features: [
-      'Até 300 agendamentos/mês',
-      'Notificações WhatsApp',
-      'Relatórios avançados',
-      'Dashboard completo',
+      'Até 250 agendamentos/mês',
+      'Controle de clientes',
+      'Relatórios básicos',
+      'Histórico de agendamentos',
       'Suporte prioritário'
     ]
   },
@@ -98,16 +110,34 @@ export const PLANOS: PlanoConfig[] = [
     label: 'Blaze',
     agendamentosMensais: -1, // ilimitado
     preco: {
-      mensal: 149.90,
-      semestral: 809.46,
-      anual: 1439.04
+      mensal: 65.00,
+      semestral: 351.00,
+      anual: 624.00
     },
     features: [
       'Agendamentos ilimitados',
-      'API personalizada',
-      'Múltiplos barbeiros',
-      'White label',
-      'Suporte 24/7'
+      'Todas as funcionalidades',
+      'Relatórios completos',
+      'Controle de barbeiros',
+      'Estatísticas detalhadas',
+      'Personalização completa',
+      'Suporte técnico prioritário'
+    ]
+  },
+  {
+    nome: 'teste',
+    label: 'Teste Grátis',
+    agendamentosMensais: 50,
+    preco: {
+      mensal: 0,
+      semestral: 0,
+      anual: 0
+    },
+    features: [
+      'Válido por 5 dias',
+      'Funcionalidades básicas',
+      'Até 50 agendamentos',
+      'Acesso limitado'
     ]
   }
 ];

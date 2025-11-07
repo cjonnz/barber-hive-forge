@@ -93,7 +93,7 @@ export const LandingPage = () => {
               Agendamentos, gestão de clientes e controle financeiro em uma plataforma única.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/login">
+              <Link to="/cadastro">
                 <Button size="lg" className="w-full sm:w-auto text-lg px-8">
                   Começar Agora
                   <ArrowRight className="ml-2" />
@@ -173,22 +173,22 @@ export const LandingPage = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {PLANOS.map((plano, index) => (
+            {PLANOS.filter(p => p.nome !== 'teste').map((plano, index) => (
               <motion.div
                 key={plano.nome}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.15 }}
                 viewport={{ once: true }}
-                className={plano.nome === 'spark' ? 'md:-mt-4' : ''}
+                className={plano.nome === 'sparkle' ? 'md:-mt-4' : ''}
               >
                 <Card className={`border-border h-full flex flex-col ${
-                  plano.nome === 'spark' 
+                  plano.nome === 'sparkle' 
                     ? 'border-primary shadow-gold' 
                     : ''
                 }`}>
                   <CardHeader>
-                    {plano.nome === 'spark' && (
+                    {plano.nome === 'sparkle' && (
                       <Badge className="w-fit mb-2 bg-primary text-primary-foreground">
                         Mais Popular
                       </Badge>
@@ -217,10 +217,10 @@ export const LandingPage = () => {
                         </li>
                       ))}
                     </ul>
-                    <Link to="/login" className="w-full">
+                    <Link to="/cadastro" className="w-full">
                       <Button 
                         className="w-full"
-                        variant={plano.nome === 'spark' ? 'default' : 'outline'}
+                        variant={plano.nome === 'sparkle' ? 'default' : 'outline'}
                       >
                         Escolher {plano.label}
                       </Button>
@@ -270,7 +270,7 @@ export const LandingPage = () => {
             <p className="text-xl text-primary-foreground/90 mb-8">
               Junte-se a centenas de barbeiros que já transformaram seus negócios com o Nexus
             </p>
-            <Link to="/login">
+            <Link to="/cadastro">
               <Button 
                 size="lg" 
                 variant="secondary"
