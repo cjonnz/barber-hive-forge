@@ -24,7 +24,7 @@ export const useAuth = () => {
 
       try {
         // Verificar se é admin (Jon)
-        if (user.email === 'jon@nexus.com' || user.email === 'admin@nexus.com') {
+        if (user.email?.toLowerCase() === 'nexusbyjon@gmail.com') {
           setUserData({ role: 'admin' });
           setUserDataLoading(false);
           return;
