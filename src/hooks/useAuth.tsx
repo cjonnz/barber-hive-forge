@@ -15,10 +15,14 @@ export const useAuth = () => {
   const [userDataLoading, setUserDataLoading] = useState(true);
 
   useEffect(() => {
+    let isActive = true;
+
     const fetchUserData = async () => {
       if (!user) {
-        setUserData(null);
-        setUserDataLoading(false);
+        if (isActive) {
+          setUserData(null);
+          setUserDataLoading(false);
+        }
         return;
       }
 
@@ -26,34 +30,43 @@ export const useAuth = () => {
 
       try {
         const email = user.email?.toLowerCase();
+        let resolvedUserData: UserData | null = null;
 
-        // Verificar se é admin (Jon)
         if (email === 'nexusbyjon@gmail.com') {
-          setUserData({ role: 'admin' });
-          return;
+          resolvedUserData = { role: 'admin' };
+        } else {
+          const barbeiroDoc = await getDoc(doc(db, 'barbeiros', user.uid));
+
+          if (barbeiroDoc.exists()) {
+            resolvedUserData = {
+              role: 'barbeiro',
+              barbeiroId: user.uid
+            };
+          } else {
+            console.warn('Dados do barbeiro não encontrados para o usuário:', user.uid);
+          }
         }
 
-        // Buscar dados do barbeiro
-        const barbeiroDoc = await getDoc(doc(db, 'barbeiros', user.uid));
-
-        if (barbeiroDoc.exists()) {
-          setUserData({
-            role: 'barbeiro',
-            barbeiroId: user.uid
-          });
-        } else {
-          console.warn('Dados do barbeiro não encontrados para o usuário:', user.uid);
-          setUserData(null);
+        if (isActive) {
+          setUserData(resolvedUserData);
         }
       } catch (err) {
         console.error('Erro ao buscar dados do usuário:', err);
-        setUserData(null);
+        if (isActive) {
+          setUserData(null);
+        }
       } finally {
-        setUserDataLoading(false);
+        if (isActive) {
+          setUserDataLoading(false);
+        }
       }
     };
 
     fetchUserData();
+
+    return () => {
+      isActive = false;
+    };
   }, [user]);
 
   return {
