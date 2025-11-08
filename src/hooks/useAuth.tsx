@@ -22,23 +22,27 @@ export const useAuth = () => {
         return;
       }
 
+      setUserDataLoading(true);
+
       try {
+        const email = user.email?.toLowerCase();
+
         // Verificar se é admin (Jon)
-        if (user.email === 'jon@nexus.com' || user.email === 'admin@nexus.com') {
+        if (email === 'nexusbyjon@gmail.com') {
           setUserData({ role: 'admin' });
-          setUserDataLoading(false);
           return;
         }
 
         // Buscar dados do barbeiro
         const barbeiroDoc = await getDoc(doc(db, 'barbeiros', user.uid));
-        
+
         if (barbeiroDoc.exists()) {
           setUserData({
             role: 'barbeiro',
             barbeiroId: user.uid
           });
         } else {
+          console.warn('Dados do barbeiro não encontrados para o usuário:', user.uid);
           setUserData(null);
         }
       } catch (err) {
