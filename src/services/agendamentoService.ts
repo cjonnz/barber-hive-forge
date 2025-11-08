@@ -119,9 +119,12 @@ export const agendamentoService = {
   ): Promise<boolean> {
     const dataInicio = new Date(data);
     dataInicio.setHours(0, 0, 0, 0);
-    
+
     const dataFim = new Date(data);
     dataFim.setHours(23, 59, 59, 999);
+
+    const inicioSolicitado = new Date(data);
+    const fimSolicitado = new Date(inicioSolicitado.getTime() + duracao * 60 * 1000);
 
     const q = query(
       collection(db, COLLECTION),
@@ -132,11 +135,27 @@ export const agendamentoService = {
     );
 
     const querySnapshot = await getDocs(q);
-    
-    // Verificar conflitos de horário
+
+    // Verificar conflitos de horário considerando duração
     for (const doc of querySnapshot.docs) {
       const agendamento = doc.data();
-      if (agendamento.hora === hora) {
+      const agendamentoTimestamp = agendamento.data as Timestamp;
+      const inicioExistente = agendamentoTimestamp.toDate();
+
+      if (typeof agendamento.hora === 'string') {
+        const [horaExistente, minutoExistente] = agendamento.hora.split(':').map(Number);
+        if (!Number.isNaN(horaExistente) && !Number.isNaN(minutoExistente)) {
+          inicioExistente.setHours(horaExistente, minutoExistente, 0, 0);
+        }
+      }
+
+      const duracaoExistente = Number(agendamento.duracao) || 0;
+      const fimExistente = new Date(inicioExistente.getTime() + duracaoExistente * 60 * 1000);
+
+      const horariosSeSobrepoem =
+        inicioSolicitado < fimExistente && fimSolicitado > inicioExistente;
+
+      if (horariosSeSobrepoem) {
         return false; // Horário já ocupado
       }
     }
