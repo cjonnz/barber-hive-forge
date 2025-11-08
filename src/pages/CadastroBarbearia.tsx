@@ -60,7 +60,7 @@ export const CadastroBarbearia = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.senha);
       
       // Criar registro na coleção barbeiros com status pendente
-      await barbeiroService.criar({
+      await barbeiroService.criar(userCredential.user.uid, {
         nomeCompleto: data.nomeCompleto,
         cpf: data.cpf,
         endereco: {
