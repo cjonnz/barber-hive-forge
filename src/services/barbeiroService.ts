@@ -1,12 +1,12 @@
 import { 
-  collection, 
-  doc, 
-  getDoc, 
-  getDocs, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  query, 
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  query,
   where,
   orderBy,
   Timestamp
@@ -18,8 +18,9 @@ const COLLECTION = 'barbeiros';
 
 export const barbeiroService = {
   // Criar novo barbeiro
-  async criar(data: Omit<Barbeiro, 'id'>): Promise<string> {
-    const docRef = await addDoc(collection(db, COLLECTION), {
+  async criar(uid: string, data: Omit<Barbeiro, 'id'>): Promise<string> {
+    const docRef = doc(db, COLLECTION, uid);
+    await setDoc(docRef, {
       ...data,
       dataCadastro: Timestamp.fromDate(data.dataCadastro),
       vencimentoPlano: Timestamp.fromDate(data.vencimentoPlano)
