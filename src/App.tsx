@@ -14,6 +14,7 @@ import { BarbeirosPage } from "@/pages/admin/BarbeirosPage";
 import { SolicitacoesPage } from "@/pages/admin/SolicitacoesPage";
 import { AgendamentosPage } from "@/pages/admin/AgendamentosPage";
 import { ConfiguracoesPage } from "@/pages/admin/ConfiguracoesPage";
+import { AdminPerfilPage } from "@/pages/admin/AdminPerfilPage";
 import { BarbeiroDashboard } from "@/pages/barbeiro/BarbeiroDashboard";
 import { AgendaPage } from "@/pages/barbeiro/AgendaPage";
 import { ServicosPage } from "@/pages/barbeiro/ServicosPage";
@@ -137,6 +138,16 @@ const AppRoutes = () => {
           <ProtectedRoute allowedRole="admin">
             <DashboardLayout userRole="admin">
               <ConfiguracoesPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/perfil"
+        element={
+          <ProtectedRoute allowedRole="admin">
+            <DashboardLayout userRole="admin">
+              <AdminPerfilPage />
             </DashboardLayout>
           </ProtectedRoute>
         }
