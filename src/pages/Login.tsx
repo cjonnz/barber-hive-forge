@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/config/firebase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +13,7 @@ export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +27,25 @@ export const Login = () => {
       toast.error('Erro ao fazer login. Verifique suas credenciais.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (!email) {
+      toast.error('Informe seu email para redefinir a senha.');
+      return;
+    }
+
+    setResetLoading(true);
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast.success('Enviamos um link para redefinição da senha.');
+    } catch (error: any) {
+      console.error('Erro ao enviar email de redefinição:', error);
+      toast.error('Não foi possível enviar o email de redefinição.');
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -82,7 +102,7 @@ export const Login = () => {
               <Button
                 type="submit"
                 className="w-full"
-                disabled={loading}
+                disabled={loading || resetLoading}
               >
                 {loading ? (
                   'Entrando...'
@@ -92,6 +112,15 @@ export const Login = () => {
                     Entrar
                   </>
                 )}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={handlePasswordReset}
+                disabled={resetLoading || loading}
+              >
+                {resetLoading ? 'Enviando...' : 'Esqueci minha senha'}
               </Button>
             </form>
             <div className="mt-6 text-center text-xs text-muted-foreground">

@@ -7,8 +7,8 @@ import { NexusLogo } from '@/components/NexusLogo';
 import { 
   LayoutDashboard, 
   Users, 
-  Calendar, 
-  Settings, 
+  Calendar,
+  Settings,
   LogOut,
   Menu,
   X,
@@ -17,7 +17,8 @@ import {
   Package,
   ShoppingCart,
   DollarSign,
-  BarChart3
+  BarChart3,
+  UserCircle
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -48,7 +49,8 @@ export const DashboardLayout = ({ children, userRole }: DashboardLayoutProps) =>
     { icon: ClipboardList, label: 'Solicitações', path: '/admin/solicitacoes' },
     { icon: Users, label: 'Barbeiros', path: '/admin/barbeiros' },
     { icon: Calendar, label: 'Agendamentos', path: '/admin/agendamentos' },
-    { icon: Settings, label: 'Configurações', path: '/admin/configuracoes' }
+    { icon: Settings, label: 'Configurações', path: '/admin/configuracoes' },
+    { icon: UserCircle, label: 'Perfil', path: '/admin/perfil' }
   ];
 
   const barbeiroMenuItems = [
