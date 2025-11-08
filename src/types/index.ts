@@ -5,6 +5,10 @@ export type BarbeiroStatus = 'pendente' | 'aprovado' | 'recusado' | 'ativo' | 's
 export type PlanoTipo = 'basico' | 'sparkle' | 'blaze' | 'teste';
 export type PagamentoTipo = 'mensal' | 'semestral' | 'anual';
 export type AgendamentoStatus = 'pendente' | 'confirmado' | 'concluido' | 'cancelado';
+export type FormaPagamentoVenda = 'DINHEIRO' | 'PIX' | 'CREDITO' | 'DEBITO' | 'TRANSFERENCIA' | 'FIADO' | 'BITCOIN';
+export type StatusVenda = 'Concluído' | 'Pendente' | 'Cancelado';
+export type StatusContaReceber = 'Pendente' | 'Pago Parcial' | 'Pago';
+export type RegimeFiscal = 'autonomo' | 'mei' | 'simples';
 
 export interface Servico {
   nome: string;
@@ -57,6 +61,108 @@ export interface Agendamento {
   comentario?: string;
   status: AgendamentoStatus;
   criadoEm: Date;
+}
+
+export interface Produto {
+  id: string;
+  barbeiroId: string;
+  nome: string;
+  categoria: string;
+  fornecedor?: string;
+  precoCompra: number;
+  precoVenda: number;
+  quantidade: number;
+  estoqueMinimo: number;
+  validade?: string;
+  ativo: boolean;
+  criadoEm: Date;
+}
+
+export interface ItemVenda {
+  produtoId: string;
+  nome: string;
+  quantidade: number;
+  valorUnitario: number;
+  subtotal: number;
+}
+
+export interface Venda {
+  id: string;
+  barbeiroId: string;
+  data: Date;
+  itens: ItemVenda[];
+  valorTotal: number;
+  pagamento: FormaPagamentoVenda;
+  status: StatusVenda;
+  clienteId?: string;
+  clienteNome?: string;
+  barbeiro?: string;
+  observacao?: string;
+  chavePix?: string;
+  nomeBanco?: string;
+  enderecoCarteira?: string;
+}
+
+export interface ContaReceber {
+  id: string;
+  barbeiroId: string;
+  vendaId: string;
+  clienteId?: string;
+  clienteNome: string;
+  valorTotal: number;
+  valorPago: number;
+  valorRestante: number;
+  status: StatusContaReceber;
+  dataVenda: Date;
+  dataPagamento?: Date;
+  observacao?: string;
+}
+
+export interface HistoricoLog {
+  id: string;
+  barbeiroId: string;
+  tipo: 'estoque' | 'venda' | 'pagamento' | 'configuracao';
+  descricao: string;
+  data: Date;
+  produto?: string;
+  valor?: number;
+}
+
+export interface ConfiguracaoBarbearia {
+  barbeiroId: string;
+  dadosGerais: {
+    nomeBarbearia: string;
+    cpfResponsavel: string;
+    cnpj: string;
+    endereco: string;
+    whatsapp: string;
+    email: string;
+    qtdFuncionarios: number;
+  };
+  agenda: {
+    diasAtivos: string[];
+    horarioInicio: string;
+    horarioFim: string;
+    intervalo: number;
+    almoco: string;
+    bloqueios: string[];
+  };
+  servicos: Servico[];
+  pagamentos: {
+    aceitaPix: boolean;
+    chavePix?: string;
+    aceitaFiado: boolean;
+    limiteFiado: number;
+  };
+  fiscal: {
+    diaFechamento: number;
+    regime: RegimeFiscal;
+    aliquota: number;
+  };
+  preferencias: {
+    tema: 'light' | 'dark';
+    alertaEstoqueMinimo: number;
+  };
 }
 
 export interface PlanoConfig {

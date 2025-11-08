@@ -13,7 +13,11 @@ import {
   Menu,
   X,
   Scissors,
-  ClipboardList
+  ClipboardList,
+  Package,
+  ShoppingCart,
+  DollarSign,
+  BarChart3
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -49,8 +53,13 @@ export const DashboardLayout = ({ children, userRole }: DashboardLayoutProps) =>
 
   const barbeiroMenuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/barbeiro' },
+    { icon: ShoppingCart, label: 'Vendas', path: '/barbeiro/vendas' },
+    { icon: Package, label: 'Produtos', path: '/barbeiro/produtos' },
+    { icon: DollarSign, label: 'Contas a Receber', path: '/barbeiro/contas-receber' },
     { icon: Calendar, label: 'Agenda', path: '/barbeiro/agenda' },
     { icon: Scissors, label: 'Serviços', path: '/barbeiro/servicos' },
+    { icon: BarChart3, label: 'Relatórios', path: '/barbeiro/relatorios' },
+    { icon: Settings, label: 'Configurações', path: '/barbeiro/configuracoes' },
     { icon: ClipboardList, label: 'Meus Dados', path: '/barbeiro/perfil' }
   ];
 

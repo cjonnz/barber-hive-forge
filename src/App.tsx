@@ -18,6 +18,11 @@ import { BarbeiroDashboard } from "@/pages/barbeiro/BarbeiroDashboard";
 import { AgendaPage } from "@/pages/barbeiro/AgendaPage";
 import { ServicosPage } from "@/pages/barbeiro/ServicosPage";
 import { PerfilPage } from "@/pages/barbeiro/PerfilPage";
+import { VendasPage } from "@/pages/barbeiro/VendasPage";
+import { ProdutosPage } from "@/pages/barbeiro/ProdutosPage";
+import { ContasReceberPage } from "@/pages/barbeiro/ContasReceberPage";
+import { RelatoriosPage } from "@/pages/barbeiro/RelatoriosPage";
+import { ConfiguracoesBarbeiroPage } from "@/pages/barbeiro/ConfiguracoesBarbeiroPage";
 import { AgendamentoPublico } from "@/pages/AgendamentoPublico";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import NotFound from "./pages/NotFound";
@@ -149,6 +154,36 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/barbeiro/vendas"
+        element={
+          <ProtectedRoute allowedRole="barbeiro">
+            <DashboardLayout userRole="barbeiro">
+              <VendasPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/barbeiro/produtos"
+        element={
+          <ProtectedRoute allowedRole="barbeiro">
+            <DashboardLayout userRole="barbeiro">
+              <ProdutosPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/barbeiro/contas-receber"
+        element={
+          <ProtectedRoute allowedRole="barbeiro">
+            <DashboardLayout userRole="barbeiro">
+              <ContasReceberPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/barbeiro/agenda"
         element={
           <ProtectedRoute allowedRole="barbeiro">
@@ -164,6 +199,26 @@ const AppRoutes = () => {
           <ProtectedRoute allowedRole="barbeiro">
             <DashboardLayout userRole="barbeiro">
               <ServicosPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/barbeiro/relatorios"
+        element={
+          <ProtectedRoute allowedRole="barbeiro">
+            <DashboardLayout userRole="barbeiro">
+              <RelatoriosPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/barbeiro/configuracoes"
+        element={
+          <ProtectedRoute allowedRole="barbeiro">
+            <DashboardLayout userRole="barbeiro">
+              <ConfiguracoesBarbeiroPage />
             </DashboardLayout>
           </ProtectedRoute>
         }
