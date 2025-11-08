@@ -128,6 +128,34 @@ export interface HistoricoLog {
   valor?: number;
 }
 
+export interface AdminPerfil {
+  id: string;
+  nome: string;
+  email: string;
+  telefone?: string;
+  whatsapp?: string;
+  cargo?: string;
+  bio?: string;
+  fotoUrl?: string;
+  notificacoesEmail: boolean;
+  notificacoesWhatsapp: boolean;
+  criadoEm?: Date;
+  atualizadoEm?: Date;
+}
+
+export interface SistemaConfiguracao {
+  sistemaEmail: string;
+  emailSMTP: string;
+  whatsappAPI: string;
+  backupAutomatico: boolean;
+  notificacoesEmail: boolean;
+  notificacoesWhatsApp: boolean;
+  autenticacaoDoisFatores?: boolean;
+  logsAtivos?: boolean;
+  criadoEm?: Date;
+  atualizadoEm?: Date;
+}
+
 export interface ConfiguracaoBarbearia {
   barbeiroId: string;
   dadosGerais: {

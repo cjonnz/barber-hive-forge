@@ -147,7 +147,7 @@ export const BarbeirosPage = () => {
                   </div>
                   <div>
                     <p className="text-muted-foreground">Agendamentos</p>
-                    <p className="font-semibold">{barbeiro.totalAgendamentos}</p>
+                    <p className="font-semibold">{(barbeiro.totalAgendamentos ?? 0).toLocaleString('pt-BR')}</p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Email</p>

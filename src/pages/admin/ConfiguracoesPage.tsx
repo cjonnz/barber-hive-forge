@@ -1,34 +1,64 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
 import { Settings, Bell, Mail, Shield, Database, Save } from 'lucide-react';
 import { toast } from 'sonner';
+import { sistemaService } from '@/services/sistemaService';
+import { SistemaConfiguracao } from '@/types';
+import { Skeleton } from '@/components/ui/skeleton';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+const configuracaoPadrao: SistemaConfiguracao = {
+  sistemaEmail: 'contato@nexus.com',
+  emailSMTP: '',
+  whatsappAPI: '',
+  backupAutomatico: true,
+  notificacoesEmail: true,
+  notificacoesWhatsApp: false,
+  autenticacaoDoisFatores: false,
+  logsAtivos: true
+};
 
 export const ConfiguracoesPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [config, setConfig] = useState({
-    sistemaEmail: 'contato@nexus.com',
-    emailSMTP: '',
-    whatsappAPI: '',
-    backupAutomatico: true,
-    notificacoesEmail: true,
-    notificacoesWhatsApp: false
-  });
+  const [config, setConfig] = useState<SistemaConfiguracao>(configuracaoPadrao);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    const carregarConfiguracoes = async () => {
+      setLoading(true);
+      try {
+        const dados = await sistemaService.obterConfiguracao();
+        if (dados) {
+          setConfig(prev => ({ ...prev, ...dados }));
+        }
+      } catch (error) {
+        console.error('Erro ao carregar configurações do sistema:', error);
+        toast.error('Não foi possível carregar as configurações.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    carregarConfiguracoes();
+  }, []);
 
   const handleSave = async () => {
-    setLoading(true);
+    setSaving(true);
     try {
-      // Aqui você implementaria a lógica de salvar as configurações
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await sistemaService.salvarConfiguracao(config);
       toast.success('Configurações salvas com sucesso!');
     } catch (error) {
+      console.error('Erro ao salvar configurações:', error);
       toast.error('Erro ao salvar configurações');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
@@ -39,7 +69,14 @@ export const ConfiguracoesPage = () => {
         <p className="text-muted-foreground">Gerencie as configurações gerais do sistema</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {loading ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <Skeleton key={index} className="h-64 rounded-xl" />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Configurações de Email */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -142,7 +179,12 @@ export const ConfiguracoesPage = () => {
                   <Label>Autenticação de Dois Fatores</Label>
                   <p className="text-xs text-muted-foreground">Adicione uma camada extra de segurança</p>
                 </div>
-                <Button variant="outline" size="sm">Ativar</Button>
+                <Switch
+                  checked={Boolean(config.autenticacaoDoisFatores)}
+                  onCheckedChange={(checked) =>
+                    setConfig(prev => ({ ...prev, autenticacaoDoisFatores: checked }))
+                  }
+                />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
@@ -150,7 +192,12 @@ export const ConfiguracoesPage = () => {
                   <Label>Logs de Acesso</Label>
                   <p className="text-xs text-muted-foreground">Registrar todos os acessos ao sistema</p>
                 </div>
-                <Button variant="outline" size="sm">Ativado</Button>
+                <Switch
+                  checked={Boolean(config.logsAtivos)}
+                  onCheckedChange={(checked) =>
+                    setConfig(prev => ({ ...prev, logsAtivos: checked }))
+                  }
+                />
               </div>
             </CardContent>
           </Card>
@@ -180,20 +227,29 @@ export const ConfiguracoesPage = () => {
                   <Label>Backup Automático</Label>
                   <p className="text-xs text-muted-foreground">Backup diário às 03:00</p>
                 </div>
-                <Button variant="outline" size="sm">Ativado</Button>
+                <Switch
+                  checked={config.backupAutomatico}
+                  onCheckedChange={(checked) =>
+                    setConfig(prev => ({ ...prev, backupAutomatico: checked }))
+                  }
+                />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
                 <div>
                   <Label>Último Backup</Label>
-                  <p className="text-xs text-muted-foreground">Hoje, 03:00</p>
+                  <p className="text-xs text-muted-foreground">
+                    {config.atualizadoEm
+                      ? `Realizado ${formatDistanceToNow(config.atualizadoEm, { locale: ptBR, addSuffix: true })}`
+                      : 'Nunca foi executado'}
+                  </p>
                 </div>
                 <Button variant="outline" size="sm">Fazer Backup Agora</Button>
               </div>
             </CardContent>
           </Card>
         </motion.div>
-      </div>
+      )}
 
       {/* Botão Salvar */}
       <motion.div
@@ -205,11 +261,11 @@ export const ConfiguracoesPage = () => {
         <Button
           size="lg"
           onClick={handleSave}
-          disabled={loading}
+          disabled={saving || loading}
           className="min-w-[200px]"
         >
           <Save className="w-5 h-5 mr-2" />
-          {loading ? 'Salvando...' : 'Salvar Configurações'}
+          {saving ? 'Salvando...' : 'Salvar Configurações'}
         </Button>
       </motion.div>
     </div>

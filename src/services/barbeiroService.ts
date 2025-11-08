@@ -1,4 +1,4 @@
-import { 
+import {
   collection,
   doc,
   getDoc,
@@ -9,12 +9,69 @@ import {
   query,
   where,
   orderBy,
-  Timestamp
+  Timestamp,
+  DocumentData,
+  QueryDocumentSnapshot,
+  DocumentSnapshot
 } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { Barbeiro, BarbeiroStatus, PlanoTipo } from '@/types';
 
 const COLLECTION = 'barbeiros';
+
+const mapTimestamp = (value: any): Date => {
+  if (value instanceof Timestamp) {
+    return value.toDate();
+  }
+
+  if (typeof value === 'string' || typeof value === 'number') {
+    const parsed = new Date(value);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed;
+    }
+  }
+
+  return new Date();
+};
+
+const mapBarbeiroData = (
+  snapshot: QueryDocumentSnapshot<DocumentData> | DocumentSnapshot<DocumentData>
+): Barbeiro => {
+  const data = snapshot.data() || {};
+
+  return {
+    id: snapshot.id,
+    nomeCompleto: data.nomeCompleto || '',
+    cpf: data.cpf || '',
+    endereco: data.endereco || {
+      rua: '',
+      numero: '',
+      bairro: '',
+      cidade: '',
+      estado: '',
+      cep: ''
+    },
+    nomeEstabelecimento: data.nomeEstabelecimento || '',
+    cnpj: data.cnpj || '',
+    quantidadeFuncionarios: data.quantidadeFuncionarios || 0,
+    fotoFachada: data.fotoFachada || '',
+    telefone: data.telefone || '',
+    email: data.email || '',
+    servicos: Array.isArray(data.servicos) ? data.servicos : [],
+    plano: data.plano || 'basico',
+    status: data.status || 'pendente',
+    dataCadastro: mapTimestamp(data.dataCadastro),
+    dataAprovacao: data.dataAprovacao ? mapTimestamp(data.dataAprovacao) : undefined,
+    dataInicioTeste: data.dataInicioTeste ? mapTimestamp(data.dataInicioTeste) : undefined,
+    vencimentoPlano: mapTimestamp(data.vencimentoPlano),
+    pagamentoTipo: data.pagamentoTipo || 'mensal',
+    modoTeste: Boolean(data.modoTeste),
+    linkPublico: data.linkPublico || '',
+    linkPagamentoExterno: data.linkPagamentoExterno || '',
+    totalAgendamentos: typeof data.totalAgendamentos === 'number' ? data.totalAgendamentos : 0,
+    motivoRecusa: data.motivoRecusa
+  } as Barbeiro;
+};
 
 export const barbeiroService = {
   // Criar novo barbeiro
@@ -34,13 +91,7 @@ export const barbeiroService = {
     const docSnap = await getDoc(docRef);
     
     if (docSnap.exists()) {
-      const data = docSnap.data();
-      return {
-        id: docSnap.id,
-        ...data,
-        dataCadastro: data.dataCadastro.toDate(),
-        vencimentoPlano: data.vencimentoPlano.toDate()
-      } as Barbeiro;
+      return mapBarbeiroData(docSnap);
     }
     
     return null;
@@ -49,24 +100,14 @@ export const barbeiroService = {
   // Listar todos os barbeiros
   async listarTodos(): Promise<Barbeiro[]> {
     const querySnapshot = await getDocs(collection(db, COLLECTION));
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      dataCadastro: doc.data().dataCadastro.toDate(),
-      vencimentoPlano: doc.data().vencimentoPlano.toDate()
-    })) as Barbeiro[];
+    return querySnapshot.docs.map(mapBarbeiroData);
   },
 
   // Listar barbeiros por status
   async listarPorStatus(status: BarbeiroStatus): Promise<Barbeiro[]> {
     const q = query(collection(db, COLLECTION), where('status', '==', status));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      dataCadastro: doc.data().dataCadastro.toDate(),
-      vencimentoPlano: doc.data().vencimentoPlano.toDate()
-    })) as Barbeiro[];
+    return querySnapshot.docs.map(mapBarbeiroData);
   },
 
   // Atualizar barbeiro
