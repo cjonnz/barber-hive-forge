@@ -2,7 +2,7 @@
 
 export type UserRole = 'admin' | 'barbeiro';
 export type BarbeiroStatus = 'pendente' | 'aprovado' | 'recusado' | 'ativo' | 'suspenso';
-export type PlanoTipo = 'basico' | 'sparkle' | 'blaze' | 'teste';
+export type PlanoTipo = 'agenda' | 'basic' | 'blaze' | 'pro' | 'teste';
 export type PagamentoTipo = 'mensal' | 'semestral' | 'anual';
 export type AgendamentoStatus = 'pendente' | 'confirmado' | 'concluido' | 'cancelado';
 export type FormaPagamentoVenda = 'DINHEIRO' | 'PIX' | 'CREDITO' | 'DEBITO' | 'TRANSFERENCIA' | 'FIADO' | 'BITCOIN';
@@ -207,55 +207,80 @@ export interface PlanoConfig {
 
 export const PLANOS: PlanoConfig[] = [
   {
-    nome: 'basico',
-    label: 'Básico',
-    agendamentosMensais: 150,
+    nome: 'agenda',
+    label: 'Agenda Plan',
+    agendamentosMensais: 250,
     preco: {
       mensal: 29.99,
       semestral: 161.94,
       anual: 287.88
     },
     features: [
-      'Até 150 agendamentos/mês',
-      'Acesso à tela de agendamentos',
-      'Sem relatórios ou estatísticas',
+      'Até 250 agendamentos/mês',
+      'Compre agendamentos extras quando precisar',
+      'Sistema de agenda completo',
+      'Link público personalizado',
+      'Notificações automáticas',
       'Suporte por email'
     ]
   },
   {
-    nome: 'sparkle',
-    label: 'Sparkle',
-    agendamentosMensais: 250,
+    nome: 'basic',
+    label: 'Basic',
+    agendamentosMensais: 350,
     preco: {
-      mensal: 48.99,
-      semestral: 264.54,
-      anual: 470.30
+      mensal: 35.00,
+      semestral: 189.00,
+      anual: 336.00
     },
     features: [
-      'Até 250 agendamentos/mês',
+      'Até 350 agendamentos/mês',
+      'Compre agendamentos extras',
       'Controle de clientes',
-      'Relatórios básicos',
+      'Cadastro de serviços',
       'Histórico de agendamentos',
+      'Relatórios básicos',
       'Suporte prioritário'
     ]
   },
   {
     nome: 'blaze',
     label: 'Blaze',
-    agendamentosMensais: -1, // ilimitado
+    agendamentosMensais: 500,
     preco: {
-      mensal: 65.00,
-      semestral: 351.00,
-      anual: 624.00
+      mensal: 55.00,
+      semestral: 297.00,
+      anual: 528.00
     },
     features: [
-      'Agendamentos ilimitados',
-      'Todas as funcionalidades',
-      'Relatórios completos',
-      'Controle de barbeiros',
+      'Até 500 agendamentos/mês',
+      'Compre agendamentos extras',
+      'Controle de estoque',
+      'Sistema de vendas completo',
+      'Contas a receber (fiado)',
+      'Relatórios avançados',
       'Estatísticas detalhadas',
-      'Personalização completa',
-      'Suporte técnico prioritário'
+      'Suporte prioritário'
+    ]
+  },
+  {
+    nome: 'pro',
+    label: 'Pro',
+    agendamentosMensais: -1,
+    preco: {
+      mensal: 85.00,
+      semestral: 459.00,
+      anual: 816.00
+    },
+    features: [
+      '✨ Agendamentos ILIMITADOS',
+      'Todas as funcionalidades',
+      'Controle de múltiplos barbeiros',
+      'Gestão financeira completa',
+      'Relatórios e análises avançadas',
+      'Personalização total do sistema',
+      'Suporte técnico VIP',
+      'Prioridade em novas funcionalidades'
     ]
   },
   {

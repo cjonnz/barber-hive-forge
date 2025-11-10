@@ -20,9 +20,10 @@ interface DashboardResumo {
 }
 
 const planoLabel: Record<PlanoTipo, string> = {
-  basico: 'Básico',
-  sparkle: 'Sparkle',
+  agenda: 'Agenda Plan',
+  basic: 'Basic',
   blaze: 'Blaze',
+  pro: 'Pro',
   teste: 'Teste'
 };
 
@@ -32,9 +33,10 @@ const inicialResumo: DashboardResumo = {
   barbeirosSuspensos: 0,
   totalAgendamentos: 0,
   barbeirosPorPlano: {
-    basico: 0,
-    sparkle: 0,
+    agenda: 0,
+    basic: 0,
     blaze: 0,
+    pro: 0,
     teste: 0
   },
   ultimosCadastros: []
