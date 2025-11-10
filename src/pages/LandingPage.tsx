@@ -4,19 +4,25 @@ import { Badge } from '@/components/ui/badge';
 import { NexusLogo } from '@/components/NexusLogo';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Calendar, 
-  BarChart3, 
-  Clock, 
-  Shield, 
-  Zap, 
-  Users,
+import {
+  Calendar,
+  BarChart3,
+  Clock,
+  Shield,
+  ShieldCheck,
+  Zap,
   Check,
   ArrowRight,
   Smartphone,
   TrendingUp,
   Bell,
-  Lock
+  Lock,
+  Sparkles,
+  Target,
+  LineChart,
+  Gauge,
+  MessageCircle,
+  Award
 } from 'lucide-react';
 import { PLANOS } from '@/types';
 
@@ -40,7 +46,7 @@ export const LandingPage = () => {
     {
       icon: Shield,
       title: 'Seguro e Confiável',
-      description: 'Dados protegidos com Firebase e backup automático em nuvem'
+      description: 'Camada de segurança avançada com criptografia e backups automáticos em nuvem'
     },
     {
       icon: Smartphone,
@@ -51,6 +57,84 @@ export const LandingPage = () => {
       icon: Bell,
       title: 'Notificações WhatsApp',
       description: 'Seus clientes recebem confirmações automáticas via WhatsApp'
+    }
+  ];
+
+  const highlights = [
+    {
+      value: '98%',
+      label: 'Satisfação dos clientes',
+      description: 'Avaliações 5 estrelas de barbearias que cresceram com o Nexus'
+    },
+    {
+      value: '120h',
+      label: 'Tempo economizado/mês',
+      description: 'Automação de rotinas administrativas e comunicação com clientes'
+    },
+    {
+      value: '30%',
+      label: 'Aumento médio da receita',
+      description: 'Resultados medidos nos primeiros três meses de uso'
+    }
+  ];
+
+  const workflow = [
+    {
+      icon: Sparkles,
+      title: '1. Configuração guiada',
+      description: 'Importe clientes e cadastre serviços em minutos com nosso assistente inteligente'
+    },
+    {
+      icon: Target,
+      title: '2. Engajamento automático',
+      description: 'Ative lembretes personalizados, notificações em massa e campanhas segmentadas'
+    },
+    {
+      icon: LineChart,
+      title: '3. Resultados visíveis',
+      description: 'Acompanhe métricas em tempo real e tome decisões baseadas em dados confiáveis'
+    }
+  ];
+
+  const differentiators = [
+    {
+      icon: ShieldCheck,
+      title: 'Proteção de dados em tempo real',
+      description:
+        'Monitoramento contínuo, criptografia ponta a ponta e camadas adicionais de redundância garantem disponibilidade total.'
+    },
+    {
+      icon: Gauge,
+      title: 'Performance otimizada',
+      description:
+        'Infraestrutura escalável com resposta média inferior a 200ms para que sua equipe nunca espere por informações.'
+    },
+    {
+      icon: MessageCircle,
+      title: 'Suporte consultivo',
+      description:
+        'Especialistas dedicados acompanham sua operação e oferecem playbooks para acelerar resultados de marketing e vendas.'
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: 'Lucas Andrade',
+      role: 'Fundador da Barbearia Urbana',
+      quote:
+        'Duplicamos o número de clientes recorrentes em três meses graças às campanhas automáticas do Nexus. O time nos apoiou em cada etapa.'
+    },
+    {
+      name: 'Renata Melo',
+      role: 'COO da Rede Elite Blades',
+      quote:
+        'O dashboard consolidou todas as unidades. Temos visibilidade diária de faturamento, ocupação e satisfação sem planilhas manuais.'
+    },
+    {
+      name: 'Diego Martins',
+      role: 'CEO da Barbearia Highline',
+      quote:
+        'Em poucos dias, migramos da agenda de papel para um fluxo digital completo. A equipe nunca esteve tão organizada e produtiva.'
     }
   ];
 
@@ -72,7 +156,24 @@ export const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
+      <section className="relative pt-32 pb-24 px-4 overflow-hidden">
+        <motion.div
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <motion.div
+            className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-primary/20 blur-3xl"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <motion.div
+            className="absolute bottom-[-160px] right-[-120px] h-[420px] w-[420px] rounded-full bg-secondary/20 blur-3xl"
+            animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </motion.div>
         <div className="container mx-auto text-center max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -89,8 +190,9 @@ export const LandingPage = () => {
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed">
-              O sistema completo que sua barbearia precisa para crescer.
-              Agendamentos, gestão de clientes e controle financeiro em uma plataforma única.
+              Alcance fila cheia durante a semana inteira com automações inteligentes, dashboards avançados
+              e uma experiência impecável para cada cliente — tudo em uma plataforma criada especialmente
+              para barbearias visionárias.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/cadastro">
@@ -103,6 +205,46 @@ export const LandingPage = () => {
                 Ver Demonstração
               </Button>
             </div>
+            <motion.div
+              className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center text-sm text-muted-foreground"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <span className="inline-flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-primary" />
+                Segurança certificada e backups contínuos
+              </span>
+              <span className="hidden sm:inline-block h-1 w-1 rounded-full bg-primary/40" aria-hidden />
+              <span className="inline-flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-primary" />
+                Insights acionáveis em tempo real
+              </span>
+              <span className="hidden sm:inline-block h-1 w-1 rounded-full bg-primary/40" aria-hidden />
+              <span className="inline-flex items-center gap-2">
+                <Clock className="w-4 h-4 text-primary" />
+                Onboarding assistido em menos de 7 dias
+              </span>
+            </motion.div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-16 grid gap-6 sm:grid-cols-3"
+          >
+            {highlights.map((highlight) => (
+              <div
+                key={highlight.label}
+                className="rounded-3xl border border-border/80 bg-background/80 p-6 text-left shadow-[0_20px_80px_-40px_rgba(0,0,0,0.65)] backdrop-blur"
+              >
+                <p className="text-4xl font-bold text-foreground">{highlight.value}</p>
+                <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground/80">
+                  {highlight.label}
+                </p>
+                <p className="mt-3 text-sm text-muted-foreground">{highlight.description}</p>
+              </div>
+            ))}
           </motion.div>
         </div>
       </section>
@@ -144,6 +286,96 @@ export const LandingPage = () => {
                       <CardTitle className="text-xl">{feature.title}</CardTitle>
                       <CardDescription className="text-base">
                         {feature.description}
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Workflow Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Como o Nexus impulsiona sua barbearia</h2>
+            <p className="text-xl text-muted-foreground">
+              Uma jornada simples para dominar seus agendamentos, encantar clientes e aumentar a receita
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {workflow.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <motion.div
+                  key={step.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <Card className="h-full border-border bg-background/90 backdrop-blur">
+                    <CardHeader>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <CardTitle className="text-xl">{step.title}</CardTitle>
+                      <CardDescription className="text-base leading-relaxed">
+                        {step.description}
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Differentiators Section */}
+      <section className="py-20 px-4 bg-background/60">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Por que líderes escolhem o Nexus</h2>
+            <p className="text-xl text-muted-foreground">
+              Tecnologia proprietária, equipe especialista e resultados comprovados para escalar sua operação
+            </p>
+          </motion.div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {differentiators.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <Card className="h-full border-border/80 bg-card/90 backdrop-blur-lg shadow-[0_15px_60px_-30px_rgba(15,23,42,0.65)]">
+                    <CardHeader className="space-y-4">
+                      <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center">
+                        <Icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <CardTitle className="text-xl">{item.title}</CardTitle>
+                      <CardDescription className="text-base leading-relaxed">
+                        {item.description}
                       </CardDescription>
                     </CardHeader>
                   </Card>
@@ -252,6 +484,47 @@ export const LandingPage = () => {
               </Badge>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-4 bg-background/60">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Histórias de quem já escala com o Nexus</h2>
+            <p className="text-xl text-muted-foreground">
+              Resultados consistentes em barbearias independentes e redes com múltiplas unidades
+            </p>
+          </motion.div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={testimonial.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Card className="h-full border-border bg-card/90 backdrop-blur">
+                  <CardContent className="p-8 space-y-6">
+                    <Award className="w-10 h-10 text-primary" />
+                    <p className="text-base leading-relaxed text-muted-foreground">“{testimonial.quote}”</p>
+                    <div>
+                      <p className="font-semibold text-foreground">{testimonial.name}</p>
+                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
