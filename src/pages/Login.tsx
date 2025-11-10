@@ -7,13 +7,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { NexusLogo } from '@/components/NexusLogo';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { LogIn } from 'lucide-react';
+import { Eye, EyeOff, LogIn } from 'lucide-react';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,15 +90,31 @@ export const Login = () => {
                 <label htmlFor="password" className="text-sm font-medium">
                   Senha
                 </label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  disabled={loading}
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    disabled={loading}
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    disabled={loading}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </div>
               <Button
                 type="submit"
