@@ -13,7 +13,7 @@ import { barbeiroService } from '@/services/barbeiroService';
 import { agendamentoService } from '@/services/agendamentoService';
 import { Barbeiro, Servico } from '@/types';
 import { Calendar as CalendarIcon, Clock, MapPin, Phone, Scissors, CheckCircle } from 'lucide-react';
-import { format, addDays, setHours, setMinutes } from 'date-fns';
+import { addDays, format, isBefore, setHours, setMinutes, startOfDay } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
 
@@ -267,7 +267,9 @@ export const AgendamentoPublico = () => {
                       selected={selectedDate}
                       onSelect={setSelectedDate}
                       locale={ptBR}
-                      disabled={(date) => date < new Date() || date > addDays(new Date(), 30)}
+                      disabled={(date) =>
+                        isBefore(date, startOfDay(new Date())) || date > addDays(new Date(), 30)
+                      }
                       className="rounded-md border border-border mx-auto"
                     />
                   </CardContent>
