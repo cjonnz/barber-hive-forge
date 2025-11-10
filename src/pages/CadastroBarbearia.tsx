@@ -34,7 +34,7 @@ const cadastroSchema = z.object({
   email: z.string().email('Email inválido'),
   senha: z.string().min(8, 'A senha deve ter no mínimo 8 caracteres'),
   confirmarSenha: z.string(),
-  plano: z.enum(['basico', 'sparkle', 'blaze'] as const),
+  plano: z.enum(['agenda', 'sparkle', 'blaze'] as const),
   aceitarTermos: z.boolean().refine(val => val === true, 'Você deve aceitar os termos de uso')
 }).refine(data => data.senha === data.confirmarSenha, {
   message: 'As senhas não coincidem',
@@ -246,9 +246,9 @@ export const CadastroBarbearia = () => {
                         <SelectValue placeholder="Selecione um plano" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="basico">Básico - R$ 29,99/mês (150 agendamentos)</SelectItem>
-                        <SelectItem value="sparkle">Sparkle - R$ 48,99/mês (250 agendamentos)</SelectItem>
-                        <SelectItem value="blaze">Blaze - R$ 65,00/mês (Ilimitado)</SelectItem>
+                        <SelectItem value="agenda">Agenda Plan - R$ 29,99/mês (250 agendamentos)</SelectItem>
+                        <SelectItem value="sparkle">Sparkle - R$ 38,90/mês (350 agendamentos)</SelectItem>
+                        <SelectItem value="blaze">Blaze - R$ 69,00/mês (500 agendamentos)</SelectItem>
                       </SelectContent>
                     </Select>
                     {errors.plano && <p className="text-sm text-destructive">{errors.plano.message}</p>}

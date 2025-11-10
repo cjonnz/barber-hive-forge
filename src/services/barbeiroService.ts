@@ -19,6 +19,23 @@ import { Barbeiro, BarbeiroStatus, PlanoTipo } from '@/types';
 
 const COLLECTION = 'barbeiros';
 
+const VALID_PLANOS = new Set<PlanoTipo>(['agenda', 'sparkle', 'blaze', 'pro', 'teste']);
+
+const normalizePlano = (plano: unknown): PlanoTipo => {
+  if (typeof plano === 'string') {
+    const normalized = plano.toLowerCase() as PlanoTipo;
+    if (VALID_PLANOS.has(normalized)) {
+      return normalized;
+    }
+
+    if (normalized === 'basico') {
+      return 'agenda';
+    }
+  }
+
+  return 'agenda';
+};
+
 const mapTimestamp = (value: any): Date => {
   if (value instanceof Timestamp) {
     return value.toDate();
@@ -58,7 +75,7 @@ const mapBarbeiroData = (
     telefone: data.telefone || '',
     email: data.email || '',
     servicos: Array.isArray(data.servicos) ? data.servicos : [],
-    plano: data.plano || 'basico',
+    plano: normalizePlano(data.plano),
     status: data.status || 'pendente',
     dataCadastro: mapTimestamp(data.dataCadastro),
     dataAprovacao: data.dataAprovacao ? mapTimestamp(data.dataAprovacao) : undefined,
@@ -79,6 +96,7 @@ export const barbeiroService = {
     const docRef = doc(db, COLLECTION, uid);
     await setDoc(docRef, {
       ...data,
+      plano: normalizePlano(data.plano),
       dataCadastro: Timestamp.fromDate(data.dataCadastro),
       vencimentoPlano: Timestamp.fromDate(data.vencimentoPlano)
     });
@@ -121,7 +139,11 @@ export const barbeiroService = {
     if (data.vencimentoPlano) {
       updateData.vencimentoPlano = Timestamp.fromDate(data.vencimentoPlano) as any;
     }
-    
+
+    if (data.plano) {
+      updateData.plano = normalizePlano(data.plano);
+    }
+
     await updateDoc(docRef, updateData);
   },
 
