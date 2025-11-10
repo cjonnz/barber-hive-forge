@@ -2,7 +2,7 @@
 
 export type UserRole = 'admin' | 'barbeiro';
 export type BarbeiroStatus = 'pendente' | 'aprovado' | 'recusado' | 'ativo' | 'suspenso';
-export type PlanoTipo = 'agenda' | 'basic' | 'blaze' | 'pro' | 'teste';
+export type PlanoTipo = 'agenda' | 'sparkle' | 'blaze' | 'pro' | 'teste';
 export type PagamentoTipo = 'mensal' | 'semestral' | 'anual';
 export type AgendamentoStatus = 'pendente' | 'confirmado' | 'concluido' | 'cancelado';
 export type FormaPagamentoVenda = 'DINHEIRO' | 'PIX' | 'CREDITO' | 'DEBITO' | 'TRANSFERENCIA' | 'FIADO' | 'BITCOIN';
@@ -225,13 +225,13 @@ export const PLANOS: PlanoConfig[] = [
     ]
   },
   {
-    nome: 'basic',
-    label: 'Basic',
+    nome: 'sparkle',
+    label: 'Sparkle',
     agendamentosMensais: 350,
     preco: {
-      mensal: 35.00,
-      semestral: 189.00,
-      anual: 336.00
+      mensal: 38.90,
+      semestral: 210.06,
+      anual: 373.44
     },
     features: [
       'Até 350 agendamentos/mês',
@@ -248,9 +248,9 @@ export const PLANOS: PlanoConfig[] = [
     label: 'Blaze',
     agendamentosMensais: 500,
     preco: {
-      mensal: 55.00,
-      semestral: 297.00,
-      anual: 528.00
+      mensal: 69.00,
+      semestral: 372.60,
+      anual: 662.40
     },
     features: [
       'Até 500 agendamentos/mês',
@@ -268,9 +268,9 @@ export const PLANOS: PlanoConfig[] = [
     label: 'Pro',
     agendamentosMensais: -1,
     preco: {
-      mensal: 85.00,
-      semestral: 459.00,
-      anual: 816.00
+      mensal: 97.50,
+      semestral: 526.50,
+      anual: 936.00
     },
     features: [
       '✨ Agendamentos ILIMITADOS',

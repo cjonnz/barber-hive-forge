@@ -21,7 +21,7 @@ interface DashboardResumo {
 
 const planoLabel: Record<PlanoTipo, string> = {
   agenda: 'Agenda Plan',
-  basic: 'Basic',
+  sparkle: 'Sparkle',
   blaze: 'Blaze',
   pro: 'Pro',
   teste: 'Teste'
@@ -34,7 +34,7 @@ const inicialResumo: DashboardResumo = {
   totalAgendamentos: 0,
   barbeirosPorPlano: {
     agenda: 0,
-    basic: 0,
+    sparkle: 0,
     blaze: 0,
     pro: 0,
     teste: 0
