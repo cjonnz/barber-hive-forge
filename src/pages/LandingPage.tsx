@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { NexusLogo } from '@/components/NexusLogo';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import type { LucideIcon } from 'lucide-react';
 import {
   Calendar,
   BarChart3,
@@ -27,6 +28,36 @@ import {
 import { PLANOS } from '@/types';
 
 export const LandingPage = () => {
+  type FeatureItem = {
+    icon: LucideIcon;
+    title: string;
+    description: string;
+  };
+
+  type HighlightItem = {
+    value: string;
+    label: string;
+    description: string;
+  };
+
+  type WorkflowStep = {
+    icon: LucideIcon;
+    title: string;
+    description: string;
+  };
+
+  type Differentiator = {
+    icon: LucideIcon;
+    title: string;
+    description: string;
+  };
+
+  type Testimonial = {
+    name: string;
+    role: string;
+    quote: string;
+  };
+
   const features = [
     {
       icon: Calendar,
@@ -58,7 +89,7 @@ export const LandingPage = () => {
       title: 'Notificações WhatsApp',
       description: 'Seus clientes recebem confirmações automáticas via WhatsApp'
     }
-  ];
+  ] satisfies FeatureItem[];
 
   const highlights = [
     {
@@ -76,7 +107,7 @@ export const LandingPage = () => {
       label: 'Aumento médio da receita',
       description: 'Resultados medidos nos primeiros três meses de uso'
     }
-  ];
+  ] satisfies HighlightItem[];
 
   const workflow = [
     {
@@ -94,7 +125,7 @@ export const LandingPage = () => {
       title: '3. Resultados visíveis',
       description: 'Acompanhe métricas em tempo real e tome decisões baseadas em dados confiáveis'
     }
-  ];
+  ] satisfies WorkflowStep[];
 
   const differentiators = [
     {
@@ -115,7 +146,7 @@ export const LandingPage = () => {
       description:
         'Especialistas dedicados acompanham sua operação e oferecem playbooks para acelerar resultados de marketing e vendas.'
     }
-  ];
+  ] satisfies Differentiator[];
 
   const testimonials = [
     {
@@ -133,10 +164,9 @@ export const LandingPage = () => {
     {
       name: 'Diego Martins',
       role: 'CEO da Barbearia Highline',
-      quote:
-        'Em poucos dias, migramos da agenda de papel para um fluxo digital completo. A equipe nunca esteve tão organizada e produtiva.'
+      quote: 'Em poucos dias, migramos da agenda de papel para um fluxo digital completo. A equipe nunca esteve tão organizada e produtiva.'
     }
-  ];
+  ] satisfies Testimonial[];
 
   return (
     <div className="min-h-screen bg-gradient-dark">
