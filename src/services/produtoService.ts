@@ -15,11 +15,15 @@ import {
   Timestamp 
 } from 'firebase/firestore';
 import { Produto } from '@/types';
+import { produtoSchema } from '@/lib/validation';
 
 const COLLECTION = 'produtos';
 
 export const produtoService = {
   async criar(barbeiroId: string, data: Omit<Produto, 'id' | 'barbeiroId' | 'criadoEm'>) {
+    // Validate input
+    produtoSchema.parse(data);
+    
     const produtoRef = collection(db, `barbeiros/${barbeiroId}/${COLLECTION}`);
     const docRef = await addDoc(produtoRef, {
       ...data,
@@ -30,6 +34,11 @@ export const produtoService = {
   },
 
   async atualizar(barbeiroId: string, produtoId: string, data: Partial<Produto>) {
+    // Validate input if provided
+    if (Object.keys(data).length > 0) {
+      produtoSchema.partial().parse(data);
+    }
+    
     const docRef = doc(db, `barbeiros/${barbeiroId}/${COLLECTION}`, produtoId);
     await updateDoc(docRef, data);
   },

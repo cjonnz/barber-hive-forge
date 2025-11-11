@@ -24,7 +24,9 @@ export const Login = () => {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success('Login realizado com sucesso!');
     } catch (error: any) {
-      console.error('Erro no login:', error);
+      if (import.meta.env.DEV) {
+        console.error('Erro no login:', error);
+      }
       toast.error('Erro ao fazer login. Verifique suas credenciais.');
     } finally {
       setLoading(false);
@@ -43,7 +45,9 @@ export const Login = () => {
       await sendPasswordResetEmail(auth, email);
       toast.success('Enviamos um link para redefinição da senha.');
     } catch (error: any) {
-      console.error('Erro ao enviar email de redefinição:', error);
+      if (import.meta.env.DEV) {
+        console.error('Erro ao enviar email de redefinição:', error);
+      }
       toast.error('Não foi possível enviar o email de redefinição.');
     } finally {
       setResetLoading(false);

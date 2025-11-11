@@ -12,12 +12,26 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { Agendamento, AgendamentoStatus } from '@/types';
+import { agendamentoSchema } from '@/lib/validation';
 
 const COLLECTION = 'agendamentos';
 
 export const agendamentoService = {
   // Criar novo agendamento
   async criar(data: Omit<Agendamento, 'id' | 'criadoEm'>): Promise<string> {
+    // Validate critical fields if they exist
+    const validationFields: any = {
+      clienteNome: data.clienteNome,
+      servico: data.servico,
+      duracao: data.duracao
+    };
+    
+    // Add optional fields if they exist
+    if ('clienteTelefone' in data) validationFields.clienteTelefone = (data as any).clienteTelefone;
+    if ('observacoes' in data) validationFields.observacoes = (data as any).observacoes;
+    
+    agendamentoSchema.partial().parse(validationFields);
+    
     const docRef = await addDoc(collection(db, COLLECTION), {
       ...data,
       data: Timestamp.fromDate(data.data),

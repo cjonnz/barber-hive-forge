@@ -47,8 +47,9 @@ export const useAuth = () => {
       fetchAttempts.current += 1;
 
       try {
-        // Verificar se é admin (Jon)
-        if (user.email?.toLowerCase() === 'nexusbyjon@gmail.com') {
+        // Verificar se é admin no Firestore (server-side validation)
+        const adminDoc = await getDoc(doc(db, 'admins', user.uid));
+        if (adminDoc.exists()) {
           setUserData({ role: 'admin' });
           setUserDataLoading(false);
           setAuthError(null);
@@ -71,7 +72,9 @@ export const useAuth = () => {
           setAuthError('Usuário não encontrado no sistema.');
         }
       } catch (err: any) {
-        console.error('Erro ao buscar dados do usuário:', err);
+        if (import.meta.env.DEV) {
+          console.error('Erro ao buscar dados do usuário:', err);
+        }
         
         // Erros de permissão devem encerrar as tentativas imediatamente
         if (err?.code === 'permission-denied') {

@@ -13,6 +13,7 @@ import {
   Timestamp 
 } from 'firebase/firestore';
 import { ContaReceber } from '@/types';
+import { pagamentoSchema } from '@/lib/validation';
 
 const COLLECTION = 'contas_a_receber';
 
@@ -101,6 +102,9 @@ export const contaReceberService = {
     contaId: string, 
     valorPago: number
   ) {
+    // Validate payment amount
+    pagamentoSchema.parse({ valor: valorPago });
+    
     const conta = await this.buscarPorId(barbeiroId, contaId);
     if (!conta) throw new Error('Conta não encontrada');
 

@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { ShoppingCart, Plus, Trash2, DollarSign } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { vendaSchema } from '@/lib/validation';
 
 export const VendasPage = () => {
   const { userData } = useAuth();
@@ -42,7 +43,14 @@ export const VendasPage = () => {
       const listaProdutos = await produtoService.listarAtivos(userData.barbeiroId);
       setProdutos(listaProdutos);
     } catch (error) {
-      console.error('Erro ao carregar produtos:', error);
+      if (import.meta.env.DEV) {
+        console.error('Erro ao carregar produtos:', error);
+      }
+      toast({
+        title: 'Erro ao carregar produtos',
+        description: 'Tente novamente mais tarde',
+        variant: 'destructive'
+      });
     }
   };
 
@@ -128,7 +136,7 @@ export const VendasPage = () => {
       return;
     }
 
-    if (pagamento === 'FIADO' && !clienteNome) {
+    if (pagamento === 'FIADO' && !clienteNome.trim()) {
       toast({
         title: 'Nome do cliente obrigatório',
         description: 'Informe o nome do cliente para venda fiada',
@@ -138,18 +146,30 @@ export const VendasPage = () => {
     }
 
     try {
-      // Criar venda
-      const vendaData = {
-        data: new Date(),
-        itens: carrinho,
-        valorTotal,
-        pagamento,
-        status: 'Concluído' as const,
+      // Validate input data
+      const validationData = {
         clienteNome: clienteNome || undefined,
         observacao: observacao || undefined,
         chavePix: pagamento === 'PIX' ? chavePix : undefined,
         nomeBanco: pagamento === 'TRANSFERENCIA' ? nomeBanco : undefined,
-        enderecoCarteira: pagamento === 'BITCOIN' ? enderecoCarteira : undefined
+        enderecoCarteira: pagamento === 'BITCOIN' ? enderecoCarteira : undefined,
+        valorTotal
+      };
+
+      const validatedData = vendaSchema.parse(validationData);
+
+      // Criar venda
+      const vendaData = {
+        data: new Date(),
+        itens: carrinho,
+        valorTotal: validatedData.valorTotal,
+        pagamento,
+        status: 'Concluído' as const,
+        clienteNome: validatedData.clienteNome,
+        observacao: validatedData.observacao,
+        chavePix: validatedData.chavePix,
+        nomeBanco: validatedData.nomeBanco,
+        enderecoCarteira: validatedData.enderecoCarteira
       };
 
       const vendaId = await vendaService.criar(userData.barbeiroId, vendaData);
@@ -215,11 +235,15 @@ export const VendasPage = () => {
       
       // Recarregar produtos para mostrar estoque atualizado
       carregarProdutos();
-    } catch (error) {
-      console.error('Erro ao concluir venda:', error);
+    } catch (error: any) {
+      if (import.meta.env.DEV) {
+        console.error('Erro ao concluir venda:', error);
+      }
+      
+      const errorMessage = error?.issues?.[0]?.message || 'Não foi possível concluir a venda';
       toast({
         title: 'Erro',
-        description: 'Não foi possível concluir a venda',
+        description: errorMessage,
         variant: 'destructive'
       });
     }

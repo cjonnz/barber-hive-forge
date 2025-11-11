@@ -48,7 +48,9 @@ export const SolicitacoesPage = () => {
       const lista = await barbeiroService.listarPorStatus('pendente');
       setSolicitacoes(lista);
     } catch (error) {
-      console.error('Erro ao carregar solicitações:', error);
+      if (import.meta.env.DEV) {
+        console.error('Erro ao carregar solicitações:', error);
+      }
       toast.error('Erro ao carregar solicitações');
     } finally {
       setLoading(false);
@@ -71,7 +73,9 @@ export const SolicitacoesPage = () => {
       toast.success(`Barbearia "${barbeiro.nomeEstabelecimento}" aprovada com sucesso!`);
       carregarSolicitacoes();
     } catch (error) {
-      console.error('Erro ao aprovar:', error);
+      if (import.meta.env.DEV) {
+        console.error('Erro ao aprovar:', error);
+      }
       toast.error('Erro ao aprovar solicitação');
     } finally {
       setActionLoading(false);
@@ -97,7 +101,9 @@ export const SolicitacoesPage = () => {
       setSelectedBarbeiro(null);
       carregarSolicitacoes();
     } catch (error) {
-      console.error('Erro ao recusar:', error);
+      if (import.meta.env.DEV) {
+        console.error('Erro ao recusar:', error);
+      }
       toast.error('Erro ao recusar solicitação');
     } finally {
       setActionLoading(false);
