@@ -23,13 +23,16 @@ const VALID_PLANOS = new Set<PlanoTipo>(['agenda', 'sparkle', 'blaze', 'pro', 't
 
 const normalizePlano = (plano: unknown): PlanoTipo => {
   if (typeof plano === 'string') {
-    const normalized = plano.toLowerCase() as PlanoTipo;
-    if (VALID_PLANOS.has(normalized)) {
-      return normalized;
+    const normalized = plano.toLowerCase();
+    
+    // Converter valores antigos para os novos
+    if (normalized === 'basico' || normalized === 'basic') {
+      return 'sparkle';
     }
-
-    if (normalized === 'basico') {
-      return 'agenda';
+    
+    // Verificar se é um plano válido
+    if (VALID_PLANOS.has(normalized as PlanoTipo)) {
+      return normalized as PlanoTipo;
     }
   }
 

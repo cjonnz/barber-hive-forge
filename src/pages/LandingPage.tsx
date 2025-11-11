@@ -28,12 +28,17 @@ export const LandingPage = () => {
     {
       icon: Calendar,
       title: 'Agenda Inteligente',
-      description: 'Sistema completo de agendamentos em tempo real com notificações automáticas'
+      description: 'Sistema completo de agendamentos em tempo real com confirmações automáticas'
     },
     {
       icon: BarChart3,
       title: 'Dashboard Completo',
       description: 'Análises e métricas detalhadas do seu negócio em um só lugar'
+    },
+    {
+      icon: TrendingUp,
+      title: 'Controle de Fiado',
+      description: 'Gerencie contas a receber com facilidade. Registre vendas fiadas, acompanhe pagamentos parciais e totais com total transparência'
     },
     {
       icon: Clock,
@@ -43,17 +48,12 @@ export const LandingPage = () => {
     {
       icon: Shield,
       title: 'Seguro e Confiável',
-      description: 'Camada de segurança avançada com criptografia e backups automáticos em nuvem'
+      description: 'Seus dados protegidos com segurança avançada e backups automáticos'
     },
     {
       icon: Smartphone,
       title: '100% Responsivo',
       description: 'Acesse de qualquer dispositivo - celular, tablet ou computador'
-    },
-    {
-      icon: Bell,
-      title: 'Notificações WhatsApp',
-      description: 'Seus clientes recebem confirmações automáticas via WhatsApp'
     }
   ];
 
