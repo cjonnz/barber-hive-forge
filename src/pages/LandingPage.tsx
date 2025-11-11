@@ -31,9 +31,9 @@ export const LandingPage = () => {
       description: 'Sistema completo de agendamentos em tempo real com confirmações automáticas'
     },
     {
-      icon: BarChart3,
-      title: 'Dashboard Completo',
-      description: 'Análises e métricas detalhadas do seu negócio em um só lugar'
+      icon: Users,
+      title: 'Gestão de Clientes',
+      description: 'Mantenha histórico completo de atendimentos e informações importantes de cada cliente'
     },
     {
       icon: TrendingUp,
@@ -41,9 +41,9 @@ export const LandingPage = () => {
       description: 'Gerencie contas a receber com facilidade. Registre vendas fiadas, acompanhe pagamentos parciais e totais com total transparência'
     },
     {
-      icon: Clock,
-      title: 'Economia de Tempo',
-      description: 'Automatize processos e foque no que realmente importa: seus clientes'
+      icon: BarChart3,
+      title: 'Controle de Estoque',
+      description: 'Gerencie produtos, controle estoque e registre vendas. Ideal para barbearias que vendem produtos'
     },
     {
       icon: Shield,
@@ -57,21 +57,21 @@ export const LandingPage = () => {
     }
   ];
 
-  const highlights = [
+  const benefits = [
     {
-      value: '98%',
-      label: 'Satisfação dos clientes',
-      description: 'Avaliações 5 estrelas de barbearias que cresceram com o Nexus'
+      icon: Calendar,
+      title: 'Agendamentos Organizados',
+      description: 'Tenha controle total da sua agenda, evite conflitos e reduza faltas'
     },
     {
-      value: '120h',
-      label: 'Tempo economizado/mês',
-      description: 'Automação de rotinas administrativas e comunicação com clientes'
+      icon: TrendingUp,
+      title: 'Gestão Financeira',
+      description: 'Controle receitas, despesas, contas a receber e vendas de produtos em um só lugar'
     },
     {
-      value: '30%',
-      label: 'Aumento médio da receita',
-      description: 'Resultados medidos nos primeiros três meses de uso'
+      icon: BarChart3,
+      title: 'Relatórios e Análises',
+      description: 'Acompanhe o desempenho do seu negócio com relatórios detalhados e gráficos'
     }
   ];
 
@@ -166,18 +166,24 @@ export const LandingPage = () => {
             transition={{ delay: 0.2 }}
             className="mt-16 grid gap-6 sm:grid-cols-3"
           >
-            {highlights.map((highlight) => (
-              <div
-                key={highlight.label}
-                className="rounded-3xl border border-border/80 bg-background/80 p-6 text-left shadow-[0_20px_80px_-40px_rgba(0,0,0,0.65)] backdrop-blur"
-              >
-                <p className="text-4xl font-bold text-foreground">{highlight.value}</p>
-                <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground/80">
-                  {highlight.label}
-                </p>
-                <p className="mt-3 text-sm text-muted-foreground">{highlight.description}</p>
-              </div>
-            ))}
+            {benefits.map((benefit, index) => {
+              const Icon = benefit.icon;
+              return (
+                <motion.div
+                  key={benefit.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + index * 0.1 }}
+                  className="rounded-3xl border border-border/80 bg-background/80 p-6 text-left shadow-[0_20px_80px_-40px_rgba(0,0,0,0.65)] backdrop-blur"
+                >
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <p className="text-xl font-bold text-foreground mb-2">{benefit.title}</p>
+                  <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                </motion.div>
+              );
+            })}
           </motion.div>
         </div>
       </section>
@@ -385,10 +391,10 @@ export const LandingPage = () => {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary-foreground">
-              Pronto para revolucionar sua barbearia?
+              Pronto para modernizar sua barbearia?
             </h2>
             <p className="text-xl text-primary-foreground/90 mb-8">
-              Junte-se a centenas de barbeiros que já transformaram seus negócios com o Nexus
+              Comece a usar o Nexus e tenha controle total do seu negócio
             </p>
             <Link to="/cadastro">
               <Button 
