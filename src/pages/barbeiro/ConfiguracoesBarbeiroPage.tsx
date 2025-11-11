@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { 
   Building2, 
@@ -18,7 +19,8 @@ import {
   FileText, 
   Palette,
   Trash2,
-  Plus
+  Plus,
+  Store
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -114,6 +116,54 @@ export const ConfiguracoesBarbeiroPage = () => {
         <h1 className="text-3xl font-bold">Configurações</h1>
         <p className="text-muted-foreground">Configure todos os aspectos da sua barbearia</p>
       </div>
+
+      {/* Módulo de Loja */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <Card className="p-6 border-primary/20">
+          <div className="flex items-center gap-2 mb-4">
+            <Store className="h-5 w-5" />
+            <h2 className="text-xl font-semibold">Módulo de Loja</h2>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+              <div className="space-y-1">
+                <Label htmlFor="moduloLoja" className="text-base font-medium">
+                  Habilitar Loja e Vendas
+                </Label>
+                <p className="text-sm text-muted-foreground">
+                  Ative para usar funcionalidades de vendas, produtos e contas a receber. 
+                  Desative se você trabalha apenas com agendamentos.
+                </p>
+              </div>
+              <Switch
+                id="moduloLoja"
+                checked={config.moduloLojaAtivo ?? true}
+                onCheckedChange={(checked) => setConfig({
+                  ...config,
+                  moduloLojaAtivo: checked
+                })}
+              />
+            </div>
+
+            {config.moduloLojaAtivo === false && (
+              <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                <p className="text-sm text-foreground">
+                  <strong>Modo Apenas Agendamentos:</strong> Ideal para o plano Agenda. 
+                  As páginas de Vendas, Produtos e Contas a Receber ficarão ocultas no menu.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <Button 
+            onClick={() => salvarSecao({ moduloLojaAtivo: config.moduloLojaAtivo ?? true })}
+            className="mt-4"
+          >
+            Salvar Módulo
+          </Button>
+        </Card>
+      </motion.div>
 
       {/* Dados da Barbearia */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>

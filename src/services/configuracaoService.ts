@@ -27,6 +27,7 @@ export const configuracaoService = {
   async inicializarPadrao(barbeiroId: string, dadosBarbeiro: any) {
     const configPadrao: ConfiguracaoBarbearia = {
       barbeiroId,
+      moduloLojaAtivo: true, // Habilitado por padrão
       dadosGerais: {
         nomeBarbearia: dadosBarbeiro.nomeEstabelecimento || '',
         cpfResponsavel: dadosBarbeiro.cpf || '',

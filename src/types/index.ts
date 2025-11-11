@@ -158,6 +158,7 @@ export interface SistemaConfiguracao {
 
 export interface ConfiguracaoBarbearia {
   barbeiroId: string;
+  moduloLojaAtivo: boolean; // Habilita funcionalidades de loja (vendas, produtos, estoque)
   dadosGerais: {
     nomeBarbearia: string;
     cpfResponsavel: string;
@@ -219,8 +220,10 @@ export const PLANOS: PlanoConfig[] = [
       'Até 250 agendamentos/mês',
       'Compre agendamentos extras quando precisar',
       'Sistema de agenda completo',
+      'Cadastro e gestão de serviços',
       'Link público personalizado',
       'Notificações automáticas',
+      'Ideal para barbearias SEM loja',
       'Suporte por email'
     ]
   },
@@ -236,6 +239,7 @@ export const PLANOS: PlanoConfig[] = [
     features: [
       'Até 350 agendamentos/mês',
       'Compre agendamentos extras',
+      'Módulo de loja opcional',
       'Controle de clientes',
       'Cadastro de serviços',
       'Histórico de agendamentos',
@@ -255,6 +259,7 @@ export const PLANOS: PlanoConfig[] = [
     features: [
       'Até 500 agendamentos/mês',
       'Compre agendamentos extras',
+      'Módulo de loja completo',
       'Controle de estoque',
       'Sistema de vendas completo',
       'Contas a receber (fiado)',

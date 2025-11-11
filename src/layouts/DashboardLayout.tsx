@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/config/firebase';
@@ -23,6 +23,8 @@ import {
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { configuracaoService } from '@/services/configuracaoService';
+import { useAuth } from '@/hooks/useAuth';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -31,8 +33,27 @@ interface DashboardLayoutProps {
 
 export const DashboardLayout = ({ children, userRole }: DashboardLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [moduloLojaAtivo, setModuloLojaAtivo] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
+  const { userData } = useAuth();
+
+  useEffect(() => {
+    const carregarConfiguracao = async () => {
+      if (userRole === 'barbeiro' && userData?.barbeiroId) {
+        try {
+          const config = await configuracaoService.buscar(userData.barbeiroId);
+          if (config) {
+            setModuloLojaAtivo(config.moduloLojaAtivo ?? true);
+          }
+        } catch (error) {
+          console.error('Erro ao carregar configuração:', error);
+        }
+      }
+    };
+
+    carregarConfiguracao();
+  }, [userRole, userData?.barbeiroId]);
 
   const handleLogout = async () => {
     try {
@@ -55,9 +76,11 @@ export const DashboardLayout = ({ children, userRole }: DashboardLayoutProps) =>
 
   const barbeiroMenuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/barbeiro' },
-    { icon: ShoppingCart, label: 'Vendas', path: '/barbeiro/vendas' },
-    { icon: Package, label: 'Produtos', path: '/barbeiro/produtos' },
-    { icon: DollarSign, label: 'Contas a Receber', path: '/barbeiro/contas-receber' },
+    ...(moduloLojaAtivo ? [
+      { icon: ShoppingCart, label: 'Vendas', path: '/barbeiro/vendas' },
+      { icon: Package, label: 'Produtos', path: '/barbeiro/produtos' },
+      { icon: DollarSign, label: 'Contas a Receber', path: '/barbeiro/contas-receber' },
+    ] : []),
     { icon: Calendar, label: 'Agenda', path: '/barbeiro/agenda' },
     { icon: Scissors, label: 'Serviços', path: '/barbeiro/servicos' },
     { icon: BarChart3, label: 'Relatórios', path: '/barbeiro/relatorios' },
