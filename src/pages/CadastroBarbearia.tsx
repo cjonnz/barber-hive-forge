@@ -15,7 +15,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { NexusLogo } from '@/components/NexusLogo';
 import { toast } from 'sonner';
-import { Loader2, ArrowLeft } from 'lucide-react';
+import { Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { PlanoTipo } from '@/types';
 
 const cadastroSchema = z.object({
@@ -45,6 +45,8 @@ type CadastroForm = z.infer<typeof cadastroSchema>;
 
 export const CadastroBarbearia = () => {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<CadastroForm>({
@@ -225,13 +227,43 @@ export const CadastroBarbearia = () => {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="senha">Senha *</Label>
-                      <Input {...register('senha')} type="password" placeholder="Mínimo 8 caracteres" />
+                      <div className="relative">
+                        <Input 
+                          {...register('senha')} 
+                          type={showPassword ? 'text' : 'password'} 
+                          placeholder="Mínimo 8 caracteres"
+                          className="pr-10"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
+                          aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                        >
+                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
                       {errors.senha && <p className="text-sm text-destructive">{errors.senha.message}</p>}
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="confirmarSenha">Confirmar Senha *</Label>
-                    <Input {...register('confirmarSenha')} type="password" placeholder="Repita a senha" />
+                    <div className="relative">
+                      <Input 
+                        {...register('confirmarSenha')} 
+                        type={showConfirmPassword ? 'text' : 'password'} 
+                        placeholder="Repita a senha"
+                        className="pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
+                        aria-label={showConfirmPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                      >
+                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
                     {errors.confirmarSenha && <p className="text-sm text-destructive">{errors.confirmarSenha.message}</p>}
                   </div>
                 </div>
